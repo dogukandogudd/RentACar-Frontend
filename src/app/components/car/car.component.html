@@ -1,0 +1,65 @@
+<app-filter></app-filter>
+
+
+<input [(ngModel)]="filterText" type="text" class="form-control" id="filterText" placeholder="Mevcut Markaları Ara..."><br>
+
+<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addCarScreen">
+    Araba Ekle
+  </button>
+  
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    <div *ngFor="let car of carDetails | carPipe:filterText" class="col">
+        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+            
+            <button type="button" class="btn btn-warning" routerLink="/updateCar/{{car.carId}}">
+                Güncelle
+              </button>
+            <button type="button" (click)="deleteCar(car.carId)"  class="btn btn-danger">Sil</button>
+        </div>
+        <div class="card">
+            
+          <img  src="{{urlPath}}/{{car.carImages[0].imagePath}}" height="200" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">{{car.brandName}}</h5>
+            
+                <table class="table">
+                    <tr>
+                        <th>Id</th>
+                        <td>{{car.carId}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Marka</th>
+                        <td>{{car.brandName}}</td>
+                    </tr>
+                    
+                    <tr>
+                        <th>Renk</th>
+                        <td>{{car.colorName}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Model Yılı</th>
+                        <td>{{car.modelYear}}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Günlük Kira Bedeli</th>
+                        <td>{{car.dailyPrice | currency:'TRY':'₺'}} </td>
+                    </tr>
+                    <tr>
+                        <button routerLink="/cars/car-details/{{car.carId}}" type="button" class="btn btn-success">Detaylara Git</button>               
+                        
+                    </tr>
+                </table>
+                
+          </div>
+        </div>
+      </div>
+  </div>
+
+  
+  <div class="modal fade" id="addCarScreen" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <app-add-car></app-add-car>
+  </div>
