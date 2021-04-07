@@ -1,33 +1,54 @@
-
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { Brand } from '../models/brand';
+import { ListResponseModel } from '../models/ListResponseModel';
 
-import { ListResponseModel } from '../models/listReponseModel';
+
+
+
 import { ResponseModel } from '../models/responseModel';
+import { SingleResponseModel } from '../models/singleResponseModel';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BrandService {
-apiUrl="https://localhost:44352/api/brands/"
-  constructor(private httpClient:HttpClient) { }
-  getBrands():Observable<ListResponseModel<Brand>>{
-    let newUrl=this.apiUrl+"getall"
-    return this.httpClient.get<ListResponseModel<Brand>>(newUrl)
+  apiControllerUrl = `${environment.apiUrl}/brands`;
+
+  constructor(private httpClient: HttpClient) {}
+
+  getBrands(): Observable<ListResponseModel<Brand>> {
+    return this.httpClient.get<ListResponseModel<Brand>>(
+      `${this.apiControllerUrl}/getall`
+    );
   }
 
-  add(brand:Brand):Observable<ResponseModel>{
-    let newUrl=this.apiUrl+"add"
-    return this.httpClient.post<ResponseModel>(newUrl,brand)
+  getBrandById(brandId: number): Observable<SingleResponseModel<Brand>> {
+    return this.httpClient.get<SingleResponseModel<Brand>>(
+      `${this.apiControllerUrl}/getbyid?id=${brandId}`
+    );
   }
-  update(brand:Brand):Observable<ResponseModel>{
-    let newUrl=this.apiUrl+"update"
-    return this.httpClient.post<ResponseModel>(newUrl,brand)
+
+  add(brand: Brand): Observable<ResponseModel> {
+    return this.httpClient.post<ResponseModel>(
+      `${this.apiControllerUrl}/add`,
+      brand
+    );
   }
-  delete(brand:Brand):Observable<ResponseModel>{
-    let newUrl=this.apiUrl+"delete"
-    return this.httpClient.post<ResponseModel>(newUrl,brand)
+
+  update(brand: Brand): Observable<ResponseModel> {
+    return this.httpClient.post<ResponseModel>(
+      `${this.apiControllerUrl}/update`,
+      brand
+    );
+  }
+
+  delete(brand: Brand): Observable<ResponseModel> {
+    return this.httpClient.post<ResponseModel>(
+      `${this.apiControllerUrl}/delete`,
+      brand
+    );
   }
 }

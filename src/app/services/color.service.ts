@@ -1,32 +1,50 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Color } from '../models/color';
-import { ListResponseModel } from '../models/listReponseModel';
-
+import { ListResponseModel } from '../models/ListResponseModel';
 import { ResponseModel } from '../models/responseModel';
+import { SingleResponseModel } from '../models/singleResponseModel';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ColorService {
-  apiUrl = 'https://localhost:44352/api/colors/';
+  apiControllerUrl = `${environment.apiUrl}/colors`;
+
   constructor(private httpClient: HttpClient) {}
+
   getColors(): Observable<ListResponseModel<Color>> {
-    let newUrl = this.apiUrl + 'getall';
-    return this.httpClient.get<ListResponseModel<Color>>(newUrl);
+    return this.httpClient.get<ListResponseModel<Color>>(
+      `${this.apiControllerUrl}/getall`
+    );
+  }
+
+  getColorById(colorId: number): Observable<SingleResponseModel<Color>> {
+    return this.httpClient.get<SingleResponseModel<Color>>(
+      `${this.apiControllerUrl}/getbyid?id=${colorId}`
+    );
   }
 
   add(color: Color): Observable<ResponseModel> {
-    let newUrl = this.apiUrl + 'add';
-    return this.httpClient.post<ResponseModel>(newUrl, color);
+    return this.httpClient.post<ResponseModel>(
+      `${this.apiControllerUrl}/add`,
+      color
+    );
   }
+
   update(color: Color): Observable<ResponseModel> {
-    let newUrl = this.apiUrl + 'update';
-    return this.httpClient.post<ResponseModel>(newUrl, color);
+    return this.httpClient.post<ResponseModel>(
+      `${this.apiControllerUrl}/update`,
+      color
+    );
   }
+
   delete(color: Color): Observable<ResponseModel> {
-    let newUrl = this.apiUrl + 'delete';
-    return this.httpClient.post<ResponseModel>(newUrl, color);
+    return this.httpClient.post<ResponseModel>(
+      `${this.apiControllerUrl}/delete`,
+      color
+    );
   }
 }
